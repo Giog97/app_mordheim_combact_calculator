@@ -1,4 +1,6 @@
-# ⚔ Mordheim Combat Calculator — PWA
+# ⚔ Mordheim Combat Calculator - PWA
+
+https://giog97.github.io/app_mordheim_combact_calculator/
 
 ## Come installare sul telefono
 
