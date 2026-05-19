@@ -1,0 +1,26 @@
+{
+  "name": "Mordheim Combat Calculator",
+  "short_name": "Mordheim",
+  "description": "Calcolatore di combattimento per Mordheim",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0f0d09",
+  "theme_color": "#1a1208",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["games", "utilities"],
+  "lang": "it"
+}
