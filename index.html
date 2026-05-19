@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#1a1208">
+<meta name="theme-color" content="#1a1208" id="meta-theme">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Mordheim">
@@ -12,381 +12,227 @@
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
-  :root {
-    --gold: #C4973A;
-    --gold-light: #e8c06a;
-    --gold-dim: #7a5c20;
-    --bg: #0f0d09;
-    --bg2: #1a1610;
-    --bg3: #231f16;
-    --bg4: #2e2a1e;
-    --text: #e8dfc8;
-    --text2: #a89870;
-    --text3: #6b5e40;
-    --border: rgba(196,151,58,0.2);
-    --border2: rgba(196,151,58,0.35);
-    --green: #4a9e6a;
-    --green-bg: #0d2617;
-    --amber: #c47a2a;
-    --amber-bg: #261a08;
-    --red: #b84040;
-    --red-bg: #260d0d;
-    --radius: 10px;
-    --radius-sm: 6px;
-  }
+/* ── DARK ── */
+:root, [data-theme="dark"] {
+  --gold: #C4973A; --gold-light: #e8c06a; --gold-dim: #8a6a28;
+  --bg: #0f0d09; --bg2: #1a1610; --bg3: #231f16; --bg4: #2e2a1e;
+  --text: #ede4cc; --text2: #b8a87a; --text3: #7a6b48;
+  --border: rgba(196,151,58,0.22); --border2: rgba(196,151,58,0.38);
+  --green: #3d8f5c; --green-bg: #0d2617; --green-text: #72d898;
+  --amber: #c47a2a; --amber-bg: #261a08; --amber-text: #eeaa55;
+  --red: #b84040; --red-bg: #260d0d; --red-text: #e87070;
+  --slider-track: #2e2a1e; --thumb-border: #0f0d09;
+  --mod-active-bg: rgba(196,151,58,0.12); --mod-active-border: #8a6a28;
+  --bar-bg: #2e2a1e;
+  --note-bg: rgba(196,151,58,0.08); --note-border: rgba(196,151,58,0.3);
+}
+/* ── LIGHT ── */
+[data-theme="light"] {
+  --gold: #7a4e08; --gold-light: #a06a10; --gold-dim: #5c3c06;
+  --bg: #f7f2e8; --bg2: #ede6d4; --bg3: #e3dac6; --bg4: #d5cbb4;
+  --text: #1e1608; --text2: #4a3a18; --text3: #7a6640;
+  --border: rgba(122,78,8,0.18); --border2: rgba(122,78,8,0.32);
+  --green: #1a6e3a; --green-bg: #d6f0e2; --green-text: #0d4a25;
+  --amber: #8a4e08; --amber-bg: #faeacc; --amber-text: #6a3606;
+  --red: #962020; --red-bg: #fad6d6; --red-text: #6a1010;
+  --slider-track: #c8bfa8; --thumb-border: #f7f2e8;
+  --mod-active-bg: rgba(122,78,8,0.08); --mod-active-border: #7a4e08;
+  --bar-bg: #d5cbb4;
+  --note-bg: rgba(122,78,8,0.06); --note-border: rgba(122,78,8,0.25);
+}
 
-  html, body {
-    height: 100%;
-    overflow: hidden;
-    background: var(--bg);
-    color: var(--text);
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    font-size: 15px;
-  }
+html, body { height:100%; overflow:hidden; background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; font-size:16px; transition:background 0.2s,color 0.2s; }
+.app { display:flex; flex-direction:column; height:100%; height:100dvh; max-width:480px; margin:0 auto; }
 
-  .app {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    height: 100dvh;
-    max-width: 480px;
-    margin: 0 auto;
-  }
+/* HEADER */
+.header { padding:max(env(safe-area-inset-top,0px),10px) 16px 10px; background:var(--bg2); border-bottom:1px solid var(--border2); display:flex; align-items:center; justify-content:space-between; flex-shrink:0; }
+.header-spacer { width:40px; }
+.header-center { flex:1; text-align:center; }
+.header-title { font-size:21px; font-weight:800; letter-spacing:0.1em; text-transform:uppercase; color:var(--gold); }
+.wake-row { display:inline-flex; align-items:center; gap:5px; margin-top:2px; }
+.wake-dot { width:7px; height:7px; border-radius:50%; background:var(--text3); transition:background 0.3s; flex-shrink:0; }
+.wake-dot.on { background:var(--green); }
+.wake-label { font-size:11px; color:var(--text3); }
+.theme-btn { width:40px; height:40px; border-radius:50%; border:1px solid var(--border2); background:var(--bg3); font-size:20px; cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:background 0.15s; }
 
-  /* HEADER */
-  .header {
-    padding: env(safe-area-inset-top, 12px) 16px 12px;
-    padding-top: max(env(safe-area-inset-top, 0px), 12px);
-    background: var(--bg2);
-    border-bottom: 0.5px solid var(--border2);
-    text-align: center;
-    flex-shrink: 0;
-  }
-  .header h1 {
-    font-size: 18px;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--gold);
-  }
-  .header p { font-size: 11px; color: var(--text3); margin-top: 1px; letter-spacing: 0.04em; }
+/* TABS */
+.tabs { display:flex; background:var(--bg2); border-bottom:1px solid var(--border); flex-shrink:0; }
+.tab { flex:1; padding:12px 4px; font-size:14px; font-weight:600; text-align:center; border:none; background:transparent; color:var(--text3); cursor:pointer; line-height:1.3; border-bottom:2.5px solid transparent; transition:color 0.15s; }
+.tab span { display:block; font-size:10px; font-weight:400; opacity:0.6; margin-top:1px; }
+.tab.active { color:var(--gold); border-bottom-color:var(--gold); }
 
-  /* TABS */
-  .tabs {
-    display: flex;
-    background: var(--bg2);
-    border-bottom: 0.5px solid var(--border);
-    flex-shrink: 0;
-  }
-  .tab {
-    flex: 1;
-    padding: 10px 4px;
-    font-size: 11px;
-    font-weight: 500;
-    text-align: center;
-    border: none;
-    background: transparent;
-    color: var(--text3);
-    cursor: pointer;
-    transition: color 0.15s;
-    line-height: 1.4;
-    border-bottom: 2px solid transparent;
-  }
-  .tab span { display: block; font-size: 9px; opacity: 0.6; margin-top: 1px; }
-  .tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+/* CONTENT */
+.content { flex:1; overflow-y:auto; overflow-x:hidden; -webkit-overflow-scrolling:touch; padding:16px 14px calc(env(safe-area-inset-bottom,0px) + 16px); }
 
-  /* SCROLL CONTENT */
-  .content {
-    flex: 1;
-    overflow-y: auto;
-    overflow-x: hidden;
-    -webkit-overflow-scrolling: touch;
-    padding: 14px 14px calc(env(safe-area-inset-bottom, 0px) + 14px);
-  }
+/* SECTION */
+.section { margin-bottom:18px; }
+.section-title { font-size:11px; font-weight:700; color:var(--gold-dim); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:13px; padding-bottom:8px; border-bottom:0.5px solid var(--border); }
 
-  /* SECTION */
-  .section { margin-bottom: 14px; }
-  .section-title {
-    font-size: 10px;
-    font-weight: 600;
-    color: var(--gold-dim);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    margin-bottom: 10px;
-    padding-bottom: 6px;
-    border-bottom: 0.5px solid var(--border);
-  }
+/* FIELD */
+.field { margin-bottom:18px; }
+.field-header { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:10px; }
+.field-label { font-size:16px; color:var(--text); font-weight:600; }
+.field-en { font-size:12px; color:var(--text3); margin-top:2px; }
+.field-val { font-size:26px; font-weight:800; color:var(--gold); min-width:30px; text-align:right; line-height:1; }
 
-  /* FIELD */
-  .field { margin-bottom: 14px; }
-  .field-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    margin-bottom: 7px;
-  }
-  .field-label { font-size: 13px; color: var(--text); font-weight: 500; }
-  .field-en { font-size: 10px; color: var(--text3); }
-  .field-val {
-    font-size: 18px;
-    font-weight: 600;
-    color: var(--gold);
-    min-width: 24px;
-    text-align: right;
-  }
+/* SLIDER */
+input[type=range] { width:100%; height:5px; -webkit-appearance:none; appearance:none; background:var(--slider-track); border-radius:3px; outline:none; }
+input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:28px; height:28px; border-radius:50%; background:var(--gold); border:3px solid var(--thumb-border); cursor:pointer; box-shadow:0 2px 6px rgba(0,0,0,0.35); }
+input[type=range]::-moz-range-thumb { width:28px; height:28px; border-radius:50%; background:var(--gold); border:3px solid var(--thumb-border); cursor:pointer; }
 
-  /* SLIDER */
-  input[type=range] {
-    width: 100%;
-    height: 4px;
-    -webkit-appearance: none;
-    appearance: none;
-    background: var(--bg4);
-    border-radius: 2px;
-    outline: none;
-  }
-  input[type=range]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    background: var(--gold);
-    border: 2px solid var(--bg);
-    cursor: pointer;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.5);
-  }
-  input[type=range]::-moz-range-thumb {
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    background: var(--gold);
-    border: 2px solid var(--bg);
-    cursor: pointer;
-  }
+.divider { height:0.5px; background:var(--border); margin:16px 0; }
 
-  /* DIVIDER */
-  .divider { height: 0.5px; background: var(--border); margin: 14px 0; }
+/* RESULT CARD */
+.result-card { background:var(--bg2); border:0.5px solid var(--border2); border-radius:13px; overflow:hidden; margin-bottom:14px; }
+.result-row { display:flex; justify-content:space-between; align-items:center; padding:14px 15px; border-bottom:0.5px solid var(--border); }
+.result-row:last-child { border-bottom:none; }
+.result-label { font-size:15px; color:var(--text2); font-weight:500; }
+.result-label small { display:block; font-size:11px; color:var(--text3); margin-top:2px; font-weight:400; }
 
-  /* RESULT CARD */
-  .result-card {
-    background: var(--bg2);
-    border: 0.5px solid var(--border2);
-    border-radius: var(--radius);
-    overflow: hidden;
-    margin-bottom: 12px;
-  }
-  .result-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 11px 14px;
-    border-bottom: 0.5px solid var(--border);
-  }
-  .result-row:last-child { border-bottom: none; }
-  .result-label { font-size: 13px; color: var(--text2); }
-  .result-label small { display: block; font-size: 10px; color: var(--text3); margin-top: 1px; }
+/* DICE */
+.dice { display:flex; align-items:center; justify-content:center; width:52px; height:52px; border-radius:12px; font-size:17px; font-weight:800; border:1.5px solid; flex-shrink:0; }
+.dice.green { background:var(--green-bg); color:var(--green-text); border-color:var(--green); }
+.dice.amber { background:var(--amber-bg); color:var(--amber-text); border-color:var(--amber); }
+.dice.red   { background:var(--red-bg);   color:var(--red-text);   border-color:var(--red); }
+.dice.muted { background:var(--bg3); color:var(--text3); border-color:var(--border); }
+.dice.gold  { background:rgba(196,151,58,0.12); color:var(--gold); border-color:var(--gold-dim); font-size:13px; }
 
-  /* DICE BADGE */
-  .dice {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 42px;
-    height: 42px;
-    border-radius: 10px;
-    font-size: 15px;
-    font-weight: 700;
-    border: 1px solid;
-    flex-shrink: 0;
-  }
-  .dice.green { background: var(--green-bg); color: #6fd48f; border-color: var(--green); }
-  .dice.amber { background: var(--amber-bg); color: #e8a04a; border-color: var(--amber); }
-  .dice.red   { background: var(--red-bg);   color: #e06060; border-color: var(--red); }
-  .dice.muted { background: var(--bg3); color: var(--text3); border-color: var(--border); }
+/* SHIELD NOTE */
+.shield-note { background:var(--note-bg); border:0.5px solid var(--note-border); border-radius:10px; padding:11px 13px; margin-bottom:14px; font-size:13px; color:var(--text2); line-height:1.5; }
+.shield-note strong { color:var(--gold); }
 
-  /* SUMMARY */
-  .summary-box {
-    background: var(--bg2);
-    border: 0.5px solid var(--border2);
-    border-radius: var(--radius);
-    padding: 14px;
-    text-align: center;
-  }
-  .summary-label { font-size: 11px; color: var(--text3); margin-bottom: 4px; }
-  .summary-pct { font-size: 36px; font-weight: 700; color: var(--gold); letter-spacing: -0.02em; }
-  .prob-bar {
-    height: 5px;
-    border-radius: 3px;
-    background: var(--bg4);
-    margin-top: 10px;
-    overflow: hidden;
-  }
-  .prob-bar-fill {
-    height: 100%;
-    border-radius: 3px;
-    background: linear-gradient(90deg, var(--gold-dim), var(--gold));
-    transition: width 0.25s ease;
-  }
-  .summary-sub { font-size: 10px; color: var(--text3); margin-top: 6px; }
+/* SUMMARY */
+.summary-box { background:var(--bg2); border:0.5px solid var(--border2); border-radius:13px; padding:18px; text-align:center; }
+.summary-label { font-size:12px; color:var(--text3); margin-bottom:4px; }
+.summary-pct { font-size:46px; font-weight:800; color:var(--gold); letter-spacing:-0.02em; line-height:1; }
+.prob-bar { height:6px; border-radius:3px; background:var(--bar-bg); margin-top:12px; overflow:hidden; }
+.prob-bar-fill { height:100%; border-radius:3px; background:linear-gradient(90deg,var(--gold-dim),var(--gold)); transition:width 0.25s ease; }
+.summary-sub { font-size:11px; color:var(--text3); margin-top:7px; }
 
-  /* MODIFIERS */
-  .mod-grid { display: flex; flex-direction: column; gap: 6px; }
-  .mod-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 11px 14px;
-    background: var(--bg3);
-    border: 0.5px solid var(--border);
-    border-radius: var(--radius-sm);
-    cursor: pointer;
-    user-select: none;
-    transition: all 0.12s;
-    -webkit-user-select: none;
-  }
-  .mod-row.active {
-    background: rgba(196,151,58,0.1);
-    border-color: var(--gold-dim);
-  }
-  .mod-label { font-size: 13px; color: var(--text); }
-  .mod-label small { display: block; font-size: 10px; color: var(--text3); margin-top: 2px; }
-  .mod-badge {
-    font-size: 13px;
-    font-weight: 600;
-    padding: 3px 10px;
-    border-radius: 20px;
-    background: var(--bg4);
-    color: var(--text2);
-    border: 0.5px solid var(--border);
-    transition: all 0.12s;
-  }
-  .mod-row.active .mod-badge { background: var(--gold); color: var(--bg); border-color: var(--gold); }
+/* MODIFIERS */
+.mod-grid { display:flex; flex-direction:column; gap:8px; }
+.mod-row { display:flex; justify-content:space-between; align-items:center; padding:14px 15px; background:var(--bg3); border:0.5px solid var(--border); border-radius:10px; cursor:pointer; user-select:none; -webkit-user-select:none; transition:all 0.12s; }
+.mod-row.active { background:var(--mod-active-bg); border-color:var(--mod-active-border); }
+.mod-label { font-size:15px; color:var(--text); font-weight:500; }
+.mod-label small { display:block; font-size:11px; color:var(--text3); margin-top:2px; font-weight:400; }
+.mod-badge { font-size:15px; font-weight:700; padding:4px 13px; border-radius:20px; background:var(--bg4); color:var(--text2); border:0.5px solid var(--border); transition:all 0.12s; }
+.mod-row.active .mod-badge { background:var(--gold); color:var(--bg); border-color:var(--gold); }
 
-  /* REFERENCE */
-  .ref-list { display: flex; flex-direction: column; gap: 6px; }
-  .ref-item {
-    display: flex;
-    gap: 12px;
-    align-items: flex-start;
-    padding: 11px 14px;
-    background: var(--bg3);
-    border: 0.5px solid var(--border);
-    border-radius: var(--radius-sm);
-  }
-  .ref-roll { font-size: 12px; font-weight: 700; color: var(--gold); min-width: 28px; padding-top: 1px; }
-  .ref-name { font-size: 13px; font-weight: 500; color: var(--text); }
-  .ref-name small { font-size: 10px; color: var(--text3); font-weight: 400; }
-  .ref-desc { font-size: 11px; color: var(--text2); margin-top: 3px; line-height: 1.4; }
+/* ARMOUR SELECTOR */
+.armor-selector { display:flex; flex-direction:column; gap:7px; }
+.armor-option { display:flex; align-items:center; justify-content:space-between; padding:12px 14px; background:var(--bg3); border:1.5px solid var(--border); border-radius:10px; cursor:pointer; user-select:none; -webkit-user-select:none; transition:all 0.12s; }
+.armor-option.selected { background:var(--mod-active-bg); border-color:var(--gold); }
+.armor-option-left { display:flex; align-items:center; gap:11px; }
+.armor-radio { width:22px; height:22px; border-radius:50%; border:2px solid var(--border2); display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:border-color 0.12s; }
+.armor-option.selected .armor-radio { border-color:var(--gold); }
+.armor-radio-dot { width:11px; height:11px; border-radius:50%; background:var(--gold); opacity:0; transition:opacity 0.12s; }
+.armor-option.selected .armor-radio-dot { opacity:1; }
+.armor-name { font-size:14px; font-weight:500; color:var(--text); line-height:1.3; }
+.armor-name small { display:block; font-size:11px; color:var(--text3); font-weight:400; }
+.armor-save-badge { font-size:15px; font-weight:700; padding:3px 11px; border-radius:8px; background:var(--bg4); color:var(--text3); border:0.5px solid var(--border); flex-shrink:0; }
+.armor-option.selected .armor-save-badge { color:var(--gold); border-color:var(--gold-dim); }
 
-  /* WAKE LOCK INDICATOR */
-  .wake-indicator {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 10px;
-    color: var(--text3);
-    margin-top: 3px;
-  }
-  .wake-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--text3);
-    transition: background 0.3s;
-  }
-  .wake-dot.active { background: var(--green); }
+/* REFERENCE */
+.ref-list { display:flex; flex-direction:column; gap:7px; }
+.ref-item { display:flex; gap:13px; align-items:flex-start; padding:13px 14px; background:var(--bg3); border:0.5px solid var(--border); border-radius:10px; }
+.ref-roll { font-size:13px; font-weight:700; color:var(--gold); min-width:32px; padding-top:1px; }
+.ref-name { font-size:15px; font-weight:600; color:var(--text); }
+.ref-name small { font-size:11px; color:var(--text3); font-weight:400; }
+.ref-desc { font-size:13px; color:var(--text2); margin-top:3px; line-height:1.45; }
 
-  .tab-panel { display: none; }
-  .tab-panel.active { display: block; }
+.tab-panel { display:none; }
+.tab-panel.active { display:block; }
+
+/* ARMOUR TABLE */
+.armor-table { width:100%; border-collapse:collapse; font-size:13px; }
+.armor-table th { text-align:left; padding:7px 10px; font-size:11px; font-weight:700; color:var(--gold-dim); text-transform:uppercase; letter-spacing:0.05em; border-bottom:1px solid var(--border2); }
+.armor-table td { padding:9px 10px; border-bottom:0.5px solid var(--border); color:var(--text2); vertical-align:middle; }
+.armor-table tr:last-child td { border-bottom:none; }
+.armor-table td:first-child { color:var(--text); font-weight:500; font-size:14px; }
+.armor-table td.save { font-weight:700; font-size:14px; color:var(--gold); text-align:center; }
+.armor-table td.nosave { color:var(--text3); text-align:center; font-size:12px; }
+.armor-table-wrap { background:var(--bg2); border:0.5px solid var(--border2); border-radius:13px; overflow:hidden; margin-bottom:14px; }
+.armor-table-note { font-size:12px; color:var(--text3); padding:10px 12px; background:var(--note-bg); border-top:0.5px solid var(--note-border); line-height:1.5; }
+.armor-table-note strong { color:var(--gold); }
 </style>
 </head>
 <body>
 <div class="app">
 
+  <!-- HEADER -->
   <div class="header">
-    <h1>⚔ Mordheim Combat</h1>
-    <div class="wake-indicator">
-      <div class="wake-dot" id="wake-dot"></div>
-      <span id="wake-label">Schermo: attivazione...</span>
+    <div class="header-spacer"></div>
+    <div class="header-center">
+      <div class="header-title">⚔ Mordheim</div>
+      <div class="wake-row">
+        <div class="wake-dot" id="wake-dot"></div>
+        <span class="wake-label" id="wake-label">schermo attivo...</span>
+      </div>
     </div>
+    <button class="theme-btn" id="theme-btn" onclick="toggleTheme()">🌙</button>
   </div>
 
+  <!-- TABS -->
   <div class="tabs">
-    <button class="tab active" onclick="showTab('cac',this)">
-      Mischia<span>Close combat</span>
-    </button>
-    <button class="tab" onclick="showTab('shoot',this)">
-      Tiro<span>Shooting</span>
-    </button>
-    <button class="tab" onclick="showTab('ref',this)">
-      Tabelle<span>Reference</span>
-    </button>
+    <button class="tab active" onclick="showTab('cac',this)">Mischia<span>Close combat</span></button>
+    <button class="tab" onclick="showTab('shoot',this)">Tiro<span>Shooting</span></button>
+    <button class="tab" onclick="showTab('ref',this)">Tabelle<span>Reference</span></button>
   </div>
 
   <div class="content">
 
-    <!-- MISCHIA -->
+    <!-- ══ MISCHIA ══ -->
     <div id="tab-cac" class="tab-panel active">
       <div class="section">
         <div class="section-title">Attaccante / Attacker</div>
         <div class="field">
-          <div class="field-header">
-            <div><div class="field-label">Abilità con le armi</div><div class="field-en">Weapon Skill (WS)</div></div>
-            <div class="field-val" id="ws-a-val">3</div>
-          </div>
-          <input type="range" min="1" max="10" value="3" step="1" id="ws-a" oninput="update()">
+          <div class="field-header"><div><div class="field-label">Abilità con le armi</div><div class="field-en">Weapon Skill (WS)</div></div><div class="field-val" id="ws-a-val">3</div></div>
+          <input type="range" min="1" max="10" value="3" id="ws-a" oninput="update()">
         </div>
         <div class="field">
-          <div class="field-header">
-            <div><div class="field-label">Forza</div><div class="field-en">Strength (S)</div></div>
-            <div class="field-val" id="str-val">3</div>
-          </div>
-          <input type="range" min="1" max="10" value="3" step="1" id="str" oninput="update()">
+          <div class="field-header"><div><div class="field-label">Forza</div><div class="field-en">Strength (S)</div></div><div class="field-val" id="str-val">3</div></div>
+          <input type="range" min="1" max="10" value="3" id="str" oninput="update()">
         </div>
       </div>
 
       <div class="section">
         <div class="section-title">Difensore / Defender</div>
         <div class="field">
-          <div class="field-header">
-            <div><div class="field-label">Abilità con le armi</div><div class="field-en">Weapon Skill (WS)</div></div>
-            <div class="field-val" id="ws-d-val">3</div>
-          </div>
-          <input type="range" min="1" max="10" value="3" step="1" id="ws-d" oninput="update()">
+          <div class="field-header"><div><div class="field-label">Abilità con le armi</div><div class="field-en">Weapon Skill (WS)</div></div><div class="field-val" id="ws-d-val">3</div></div>
+          <input type="range" min="1" max="10" value="3" id="ws-d" oninput="update()">
         </div>
         <div class="field">
-          <div class="field-header">
-            <div><div class="field-label">Robustezza</div><div class="field-en">Toughness (T)</div></div>
-            <div class="field-val" id="tough-val">3</div>
-          </div>
-          <input type="range" min="1" max="10" value="3" step="1" id="tough" oninput="update()">
+          <div class="field-header"><div><div class="field-label">Robustezza</div><div class="field-en">Toughness (T)</div></div><div class="field-val" id="tough-val">3</div></div>
+          <input type="range" min="1" max="10" value="3" id="tough" oninput="update()">
         </div>
         <div class="field">
-          <div class="field-header">
-            <div><div class="field-label">Armatura</div><div class="field-en">Armour Save</div></div>
-            <div class="field-val" id="armor-val" style="font-size:12px">–</div>
+          <div class="field-header" style="margin-bottom:11px"><div><div class="field-label">Protezione</div><div class="field-en">Armour &amp; Shield</div></div></div>
+          <!-- idx: 0=none,1=shield only,2=light,3=light+sh,4=heavy,5=heavy+sh,6=gromril,7=gromril+sh -->
+          <div class="armor-selector" id="armor-selector-cac">
+            <div class="armor-option selected" onclick="selectArmor('cac',0,this)"><div class="armor-option-left"><div class="armor-radio"><div class="armor-radio-dot"></div></div><div class="armor-name">Nessuna<small>No armour</small></div></div><div class="armor-save-badge">–</div></div>
+            <div class="armor-option" onclick="selectArmor('cac',1,this)"><div class="armor-option-left"><div class="armor-radio"><div class="armor-radio-dot"></div></div><div class="armor-name">Solo scudo ★<small>Shield only — 6+ non modificabile</small></div></div><div class="armor-save-badge">6+★</div></div>
+            <div class="armor-option" onclick="selectArmor('cac',2,this)"><div class="armor-option-left"><div class="armor-radio"><div class="armor-radio-dot"></div></div><div class="armor-name">Armatura leggera<small>Light armour</small></div></div><div class="armor-save-badge">6+</div></div>
+            <div class="armor-option" onclick="selectArmor('cac',3,this)"><div class="armor-option-left"><div class="armor-radio"><div class="armor-radio-dot"></div></div><div class="armor-name">Leggera + scudo<small>Light armour + shield</small></div></div><div class="armor-save-badge">5+</div></div>
+            <div class="armor-option" onclick="selectArmor('cac',4,this)"><div class="armor-option-left"><div class="armor-radio"><div class="armor-radio-dot"></div></div><div class="armor-name">Armatura pesante<small>Heavy armour</small></div></div><div class="armor-save-badge">5+</div></div>
+            <div class="armor-option" onclick="selectArmor('cac',5,this)"><div class="armor-option-left"><div class="armor-radio"><div class="armor-radio-dot"></div></div><div class="armor-name">Pesante + scudo<small>Heavy armour + shield</small></div></div><div class="armor-save-badge">4+</div></div>
+            <div class="armor-option" onclick="selectArmor('cac',6,this)"><div class="armor-option-left"><div class="armor-radio"><div class="armor-radio-dot"></div></div><div class="armor-name">Armatura di Gromril<small>Gromril armour</small></div></div><div class="armor-save-badge">4+</div></div>
+            <div class="armor-option" onclick="selectArmor('cac',7,this)"><div class="armor-option-left"><div class="armor-radio"><div class="armor-radio-dot"></div></div><div class="armor-name">Gromril + scudo<small>Gromril armour + shield</small></div></div><div class="armor-save-badge">3+</div></div>
           </div>
-          <input type="range" min="0" max="4" value="0" step="1" id="armor" oninput="update()">
         </div>
+      </div>
+
+      <div id="cac-shield-note" class="shield-note" style="display:none">
+        <strong>★ Scudo solo (LRB ufficiale):</strong> in mischia garantisce una salvezza di <strong>6+ non modificabile</strong> dalla Forza del nemico. Contro i tiri (shooting) lo scudo da solo <strong>non fornisce salvezza</strong>.
       </div>
 
       <div class="divider"></div>
 
       <div class="result-card">
-        <div class="result-row">
-          <div class="result-label">Per colpire<small>Roll to hit (D6 ≥)</small></div>
-          <div class="dice muted" id="res-hit">–</div>
-        </div>
-        <div class="result-row">
-          <div class="result-label">Per ferire<small>Roll to wound (D6 ≥)</small></div>
-          <div class="dice muted" id="res-wound">–</div>
-        </div>
-        <div class="result-row">
-          <div class="result-label">Salvezza armatura mod.<small>Modified armour save (D6 ≥)</small></div>
-          <div class="dice muted" id="res-armor">–</div>
-        </div>
+        <div class="result-row"><div class="result-label">Per colpire<small>Roll to hit (D6 ≥)</small></div><div class="dice muted" id="res-hit">–</div></div>
+        <div class="result-row"><div class="result-label">Per ferire<small>Roll to wound (D6 ≥)</small></div><div class="dice muted" id="res-wound">–</div></div>
+        <div class="result-row"><div class="result-label">Salvezza armatura<small>Armour save (D6 ≥)</small></div><div class="dice muted" id="res-armor">–</div></div>
       </div>
 
       <div class="summary-box">
@@ -397,81 +243,57 @@
       </div>
     </div>
 
-    <!-- TIRO -->
+    <!-- ══ TIRO ══ -->
     <div id="tab-shoot" class="tab-panel">
       <div class="section">
         <div class="section-title">Tiratore / Shooter</div>
         <div class="field">
-          <div class="field-header">
-            <div><div class="field-label">Abilità balistica</div><div class="field-en">Ballistic Skill (BS)</div></div>
-            <div class="field-val" id="bs-val">3</div>
-          </div>
-          <input type="range" min="1" max="10" value="3" step="1" id="bs" oninput="updateShoot()">
+          <div class="field-header"><div><div class="field-label">Abilità balistica</div><div class="field-en">Ballistic Skill (BS)</div></div><div class="field-val" id="bs-val">3</div></div>
+          <input type="range" min="1" max="10" value="3" id="bs" oninput="updateShoot()">
         </div>
         <div class="field">
-          <div class="field-header">
-            <div><div class="field-label">Forza arma</div><div class="field-en">Weapon Strength (S)</div></div>
-            <div class="field-val" id="wstr-val">3</div>
-          </div>
-          <input type="range" min="1" max="10" value="3" step="1" id="wstr" oninput="updateShoot()">
+          <div class="field-header"><div><div class="field-label">Forza arma</div><div class="field-en">Weapon Strength (S)</div></div><div class="field-val" id="wstr-val">3</div></div>
+          <input type="range" min="1" max="10" value="3" id="wstr" oninput="updateShoot()">
         </div>
       </div>
 
       <div class="section">
         <div class="section-title">Bersaglio / Target</div>
         <div class="field">
-          <div class="field-header">
-            <div><div class="field-label">Robustezza</div><div class="field-en">Toughness (T)</div></div>
-            <div class="field-val" id="st-val">3</div>
-          </div>
-          <input type="range" min="1" max="10" value="3" step="1" id="stough" oninput="updateShoot()">
+          <div class="field-header"><div><div class="field-label">Robustezza</div><div class="field-en">Toughness (T)</div></div><div class="field-val" id="st-val">3</div></div>
+          <input type="range" min="1" max="10" value="3" id="stough" oninput="updateShoot()">
         </div>
         <div class="field">
-          <div class="field-header">
-            <div><div class="field-label">Armatura</div><div class="field-en">Armour Save</div></div>
-            <div class="field-val" id="sarmor-val" style="font-size:12px">–</div>
+          <div class="field-header" style="margin-bottom:11px"><div><div class="field-label">Protezione</div><div class="field-en">Armour &amp; Shield</div></div></div>
+          <!-- Shooting: no "shield only" option (shield gives no save vs shooting) -->
+          <div class="armor-selector" id="armor-selector-shoot">
+            <div class="armor-option selected" onclick="selectArmor('shoot',0,this)"><div class="armor-option-left"><div class="armor-radio"><div class="armor-radio-dot"></div></div><div class="armor-name">Nessuna / Solo scudo<small>No armour — shield alone gives no save vs shooting</small></div></div><div class="armor-save-badge">–</div></div>
+            <div class="armor-option" onclick="selectArmor('shoot',2,this)"><div class="armor-option-left"><div class="armor-radio"><div class="armor-radio-dot"></div></div><div class="armor-name">Armatura leggera<small>Light armour</small></div></div><div class="armor-save-badge">6+</div></div>
+            <div class="armor-option" onclick="selectArmor('shoot',3,this)"><div class="armor-option-left"><div class="armor-radio"><div class="armor-radio-dot"></div></div><div class="armor-name">Leggera + scudo<small>Light armour + shield</small></div></div><div class="armor-save-badge">5+</div></div>
+            <div class="armor-option" onclick="selectArmor('shoot',4,this)"><div class="armor-option-left"><div class="armor-radio"><div class="armor-radio-dot"></div></div><div class="armor-name">Armatura pesante<small>Heavy armour</small></div></div><div class="armor-save-badge">5+</div></div>
+            <div class="armor-option" onclick="selectArmor('shoot',5,this)"><div class="armor-option-left"><div class="armor-radio"><div class="armor-radio-dot"></div></div><div class="armor-name">Pesante + scudo<small>Heavy armour + shield</small></div></div><div class="armor-save-badge">4+</div></div>
+            <div class="armor-option" onclick="selectArmor('shoot',6,this)"><div class="armor-option-left"><div class="armor-radio"><div class="armor-radio-dot"></div></div><div class="armor-name">Armatura di Gromril<small>Gromril armour</small></div></div><div class="armor-save-badge">4+</div></div>
+            <div class="armor-option" onclick="selectArmor('shoot',7,this)"><div class="armor-option-left"><div class="armor-radio"><div class="armor-radio-dot"></div></div><div class="armor-name">Gromril + scudo<small>Gromril armour + shield</small></div></div><div class="armor-save-badge">3+</div></div>
           </div>
-          <input type="range" min="0" max="4" value="0" step="1" id="sarmor" oninput="updateShoot()">
         </div>
       </div>
 
       <div class="section">
         <div class="section-title">Modificatori / Modifiers</div>
         <div class="mod-grid">
-          <div class="mod-row" id="mod-cover" onclick="toggleMod('cover')">
-            <div class="mod-label">In copertura<small>Target in cover</small></div>
-            <div class="mod-badge">−1</div>
-          </div>
-          <div class="mod-row" id="mod-move" onclick="toggleMod('move')">
-            <div class="mod-label">In movimento<small>Moving &amp; shooting</small></div>
-            <div class="mod-badge">−1</div>
-          </div>
-          <div class="mod-row" id="mod-long" onclick="toggleMod('long')">
-            <div class="mod-label">Lunga distanza<small>Long range</small></div>
-            <div class="mod-badge">−1</div>
-          </div>
-          <div class="mod-row" id="mod-large" onclick="toggleMod('large')">
-            <div class="mod-label">Bersaglio grande<small>Large target</small></div>
-            <div class="mod-badge">+1</div>
-          </div>
+          <div class="mod-row" id="mod-cover" onclick="toggleMod('cover')"><div class="mod-label">In copertura<small>Target in cover</small></div><div class="mod-badge">−1</div></div>
+          <div class="mod-row" id="mod-move"  onclick="toggleMod('move')"><div class="mod-label">In movimento<small>Moving &amp; shooting</small></div><div class="mod-badge">−1</div></div>
+          <div class="mod-row" id="mod-long"  onclick="toggleMod('long')"><div class="mod-label">Lunga distanza<small>Long range</small></div><div class="mod-badge">−1</div></div>
+          <div class="mod-row" id="mod-large" onclick="toggleMod('large')"><div class="mod-label">Bersaglio grande<small>Large target</small></div><div class="mod-badge">+1</div></div>
         </div>
       </div>
 
       <div class="divider"></div>
 
       <div class="result-card">
-        <div class="result-row">
-          <div class="result-label">Per colpire (con mod.)<small>Roll to hit (D6 ≥)</small></div>
-          <div class="dice muted" id="sres-hit">–</div>
-        </div>
-        <div class="result-row">
-          <div class="result-label">Per ferire<small>Roll to wound (D6 ≥)</small></div>
-          <div class="dice muted" id="sres-wound">–</div>
-        </div>
-        <div class="result-row">
-          <div class="result-label">Salvezza armatura mod.<small>Modified armour save (D6 ≥)</small></div>
-          <div class="dice muted" id="sres-armor">–</div>
-        </div>
+        <div class="result-row"><div class="result-label">Per colpire (con mod.)<small>Roll to hit (D6 ≥)</small></div><div class="dice muted" id="sres-hit">–</div></div>
+        <div class="result-row"><div class="result-label">Per ferire<small>Roll to wound (D6 ≥)</small></div><div class="dice muted" id="sres-wound">–</div></div>
+        <div class="result-row"><div class="result-label">Salvezza armatura<small>Armour save (D6 ≥)</small></div><div class="dice muted" id="sres-armor">–</div></div>
       </div>
 
       <div class="summary-box">
@@ -482,84 +304,32 @@
       </div>
     </div>
 
-    <!-- TABELLE -->
+    <!-- ══ TABELLE ══ -->
     <div id="tab-ref" class="tab-panel">
+
       <div class="section">
-        <div class="section-title">Colpi critici / Critical hits</div>
-        <div class="ref-list">
-          <div class="ref-item">
-            <div class="ref-roll">1–2</div>
-            <div>
-              <div class="ref-name">Parte vitale <small>Vital part</small></div>
-              <div class="ref-desc">1 ferita = 2 ferite. Salvezza armatura applicata normalmente.</div>
-            </div>
-          </div>
-          <div class="ref-item">
-            <div class="ref-roll">3–4</div>
-            <div>
-              <div class="ref-name">Punto esposto <small>Exposed spot</small></div>
-              <div class="ref-desc">1 ferita = 2 ferite. Nessuna salvezza armatura.</div>
-            </div>
-          </div>
-          <div class="ref-item">
-            <div class="ref-roll">5–6</div>
-            <div>
-              <div class="ref-name">Colpo maestro <small>Master Strike</small></div>
-              <div class="ref-desc">1 ferita = 2 ferite. Nessuna salvezza. +2 al tiro ferita.</div>
-            </div>
+        <div class="section-title">Armatura e scudo / Armour &amp; shield saves</div>
+        <div class="armor-table-wrap">
+          <table class="armor-table">
+            <thead><tr><th>Protezione</th><th style="text-align:center">Mischia</th><th style="text-align:center">Tiro</th></tr></thead>
+            <tbody>
+              <tr><td>Solo scudo <small style="color:var(--gold);font-size:11px">★ non mod.</small></td><td class="save">6+★</td><td class="nosave">–</td></tr>
+              <tr><td>Armatura leggera <small style="color:var(--text3);font-size:11px">Light</small></td><td class="save">6+</td><td class="save">6+</td></tr>
+              <tr><td>Leggera + scudo <small style="color:var(--text3);font-size:11px">Light + shield</small></td><td class="save">5+</td><td class="save">5+</td></tr>
+              <tr><td>Armatura pesante <small style="color:var(--text3);font-size:11px">Heavy</small></td><td class="save">5+</td><td class="save">5+</td></tr>
+              <tr><td>Pesante + scudo <small style="color:var(--text3);font-size:11px">Heavy + shield</small></td><td class="save">4+</td><td class="save">4+</td></tr>
+              <tr><td>Armatura di Gromril <small style="color:var(--text3);font-size:11px">Gromril</small></td><td class="save">4+</td><td class="save">4+</td></tr>
+              <tr><td>Gromril + scudo <small style="color:var(--text3);font-size:11px">Gromril + shield</small></td><td class="save">3+</td><td class="save">3+</td></tr>
+            </tbody>
+          </table>
+          <div class="armor-table-note">
+            <strong>★ Solo scudo (LRB):</strong> in mischia garantisce una salvezza di 6+ <em>non modificabile</em> dalla Forza (non si applica ai tiri). Tutte le altre salvezze sono ridotte dalla Forza dell'attaccante.
           </div>
         </div>
       </div>
 
-      <div class="section" style="margin-top:16px">
-        <div class="section-title">Tabella ferite / Injury chart</div>
-        <div class="ref-list">
-          <div class="ref-item">
-            <div class="ref-roll" style="color:#e8a04a">1–2</div>
-            <div>
-              <div class="ref-name">A terra <small>Knocked down</small></div>
-              <div class="ref-desc">Modello face su. Si rialza nel turno di recupero.</div>
-            </div>
-          </div>
-          <div class="ref-item">
-            <div class="ref-roll" style="color:#c47a2a">3–4</div>
-            <div>
-              <div class="ref-name">Stordito <small>Stunned</small></div>
-              <div class="ref-desc">Modello face giù. Diventa "a terra" nel turno di recupero successivo.</div>
-            </div>
-          </div>
-          <div class="ref-item">
-            <div class="ref-roll" style="color:#e06060">5–6</div>
-            <div>
-              <div class="ref-name">Fuori combattimento <small>Out of action</small></div>
-              <div class="ref-desc">Rimosso dal gioco.</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="section" style="margin-top:16px">
-        <div class="section-title">Sequenza del turno / Turn sequence</div>
-        <div class="ref-list">
-          <div class="ref-item"><div class="ref-roll" style="color:var(--gold)">1</div><div><div class="ref-name">Recupero <small>Recovery</small></div><div class="ref-desc">Raduna le truppe in fuga (2D6 ≤ Cd). Storditi → A terra, A terra → Si rialzano.</div></div></div>
-          <div class="ref-item"><div class="ref-roll" style="color:var(--gold)">2</div><div><div class="ref-name">Movimento <small>Movement</small></div><div class="ref-desc">Carica → Mosse obbligate → Mosse libere.</div></div></div>
-          <div class="ref-item"><div class="ref-roll" style="color:var(--gold)">3</div><div><div class="ref-name">Tiro <small>Shooting</small></div></div></div>
-          <div class="ref-item"><div class="ref-roll" style="color:var(--gold)">4</div><div><div class="ref-name">Mischia <small>Close combat</small></div></div></div>
-        </div>
-      </div>
-
-      <div class="section" style="margin-top:16px">
-        <div class="section-title">Armatura / Armour</div>
-        <div class="ref-list">
-          <div class="ref-item"><div class="ref-roll">6+</div><div><div class="ref-name">Armatura leggera <small>Light armour</small></div></div></div>
-          <div class="ref-item"><div class="ref-roll">5+</div><div><div class="ref-name">Armatura pesante <small>Heavy armour</small></div></div></div>
-          <div class="ref-item"><div class="ref-roll">4+</div><div><div class="ref-name">Armatura di Gromril <small>Gromril armour</small></div></div></div>
-          <div class="ref-item"><div class="ref-roll">+1</div><div><div class="ref-name">Scudo <small>Shield</small></div><div class="ref-desc">Aggiunge +1 alla salvezza armatura base.</div></div></div>
-        </div>
-      </div>
-
-      <div class="section" style="margin-top:16px">
-        <div class="section-title">Modificatori salvezza / Armour save modifiers (by Strength)</div>
+      <div class="section">
+        <div class="section-title">Mod. salvezza per Forza / Save modifier by Strength</div>
         <div class="ref-list">
           <div class="ref-item"><div class="ref-roll">S 1–3</div><div><div class="ref-name">Nessuna modifica <small>No modifier</small></div></div></div>
           <div class="ref-item"><div class="ref-roll">S 4</div><div><div class="ref-name">−1 alla salvezza</div></div></div>
@@ -570,175 +340,187 @@
           <div class="ref-item"><div class="ref-roll">S 9+</div><div><div class="ref-name">−6 alla salvezza</div></div></div>
         </div>
       </div>
-    </div>
 
+      <div class="section" style="margin-top:16px">
+        <div class="section-title">Colpi critici / Critical hits</div>
+        <div class="ref-list">
+          <div class="ref-item"><div class="ref-roll">1–2</div><div><div class="ref-name">Parte vitale <small>Vital part</small></div><div class="ref-desc">1 ferita = 2 ferite. Salvezza armatura applicata normalmente.</div></div></div>
+          <div class="ref-item"><div class="ref-roll">3–4</div><div><div class="ref-name">Punto esposto <small>Exposed spot</small></div><div class="ref-desc">1 ferita = 2 ferite. Nessuna salvezza armatura.</div></div></div>
+          <div class="ref-item"><div class="ref-roll">5–6</div><div><div class="ref-name">Colpo maestro <small>Master Strike</small></div><div class="ref-desc">1 ferita = 2 ferite. Nessuna salvezza. +2 al tiro ferita.</div></div></div>
+        </div>
+      </div>
+
+      <div class="section" style="margin-top:16px">
+        <div class="section-title">Tabella ferite / Injury chart</div>
+        <div class="ref-list">
+          <div class="ref-item"><div class="ref-roll" style="color:var(--amber-text)">1–2</div><div><div class="ref-name">A terra <small>Knocked down</small></div><div class="ref-desc">Modello face su. Si rialza nel turno di recupero.</div></div></div>
+          <div class="ref-item"><div class="ref-roll" style="color:var(--amber)">3–4</div><div><div class="ref-name">Stordito <small>Stunned</small></div><div class="ref-desc">Modello face giù. Diventa "a terra" nel turno di recupero successivo.</div></div></div>
+          <div class="ref-item"><div class="ref-roll" style="color:var(--red-text)">5–6</div><div><div class="ref-name">Fuori combattimento <small>Out of action</small></div><div class="ref-desc">Rimosso dal gioco.</div></div></div>
+        </div>
+      </div>
+
+      <div class="section" style="margin-top:16px">
+        <div class="section-title">Sequenza del turno / Turn sequence</div>
+        <div class="ref-list">
+          <div class="ref-item"><div class="ref-roll">1</div><div><div class="ref-name">Recupero <small>Recovery</small></div><div class="ref-desc">2D6 ≤ Cd per fermare la fuga. Storditi → A terra, A terra → Si rialzano.</div></div></div>
+          <div class="ref-item"><div class="ref-roll">2</div><div><div class="ref-name">Movimento <small>Movement</small></div><div class="ref-desc">Carica → Mosse obbligate → Mosse libere.</div></div></div>
+          <div class="ref-item"><div class="ref-roll">3</div><div><div class="ref-name">Tiro <small>Shooting</small></div></div></div>
+          <div class="ref-item"><div class="ref-roll">4</div><div><div class="ref-name">Mischia <small>Close combat</small></div></div></div>
+        </div>
+      </div>
+
+    </div><!-- /ref -->
   </div><!-- /content -->
 </div><!-- /app -->
 
 <script>
-// ─── Wake Lock ───────────────────────────────────────────────────────────────
-let wakeLock = null;
-async function requestWakeLock() {
-  if (!('wakeLock' in navigator)) {
-    document.getElementById('wake-label').textContent = 'Schermo: non supportato';
-    return;
-  }
-  try {
-    wakeLock = await navigator.wakeLock.request('screen');
-    document.getElementById('wake-dot').classList.add('active');
-    document.getElementById('wake-label').textContent = 'Schermo: sempre attivo';
-    wakeLock.addEventListener('release', () => {
-      document.getElementById('wake-dot').classList.remove('active');
-      document.getElementById('wake-label').textContent = 'Schermo: disattivato';
+// ── Wake Lock ──────────────────────────────────────────────────────────────
+let wakeLock=null;
+async function requestWakeLock(){
+  if(!('wakeLock' in navigator)){document.getElementById('wake-label').textContent='non supportato';return;}
+  try{
+    wakeLock=await navigator.wakeLock.request('screen');
+    document.getElementById('wake-dot').classList.add('on');
+    document.getElementById('wake-label').textContent='schermo sempre attivo';
+    wakeLock.addEventListener('release',()=>{
+      document.getElementById('wake-dot').classList.remove('on');
+      document.getElementById('wake-label').textContent='schermo disattivato';
     });
-  } catch (e) {
-    document.getElementById('wake-label').textContent = 'Schermo: permesso negato';
+  }catch(e){document.getElementById('wake-label').textContent='permesso negato';}
+}
+document.addEventListener('visibilitychange',async()=>{if(document.visibilityState==='visible')await requestWakeLock();});
+requestWakeLock();
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+
+// ── Theme ──────────────────────────────────────────────────────────────────
+let darkMode=true;
+function toggleTheme(){
+  darkMode=!darkMode;
+  document.documentElement.setAttribute('data-theme',darkMode?'dark':'light');
+  document.getElementById('theme-btn').textContent=darkMode?'🌙':'☀️';
+  document.getElementById('meta-theme').content=darkMode?'#1a1208':'#ede6d4';
+}
+
+// ── Armour data ────────────────────────────────────────────────────────────
+// idx: 0=none, 1=shieldOnly(6+ unmod), 2=light, 3=light+sh, 4=heavy, 5=heavy+sh, 6=gromril, 7=gromril+sh
+// armourBase: base save. null=no save. -1=special (shield only = unmodifiable 6+)
+const armourBase     = [null, -1,  6,  5,  5,  4,  4,  3];
+// armourBaseShooting: same except shield-only = null (no save)
+const armourBaseShooting = [null, null, 6, 5, 5, 4, 4, 3];
+
+let armorCac=0, armorShoot=0;
+const mods={cover:false,move:false,long:false,large:false};
+
+function selectArmor(tab,idx,el){
+  document.getElementById('armor-selector-'+tab).querySelectorAll('.armor-option').forEach(o=>o.classList.remove('selected'));
+  el.classList.add('selected');
+  if(tab==='cac'){
+    armorCac=idx;
+    document.getElementById('cac-shield-note').style.display=(idx===1)?'block':'none';
+    update();
+  } else {
+    armorShoot=idx;
+    updateShoot();
   }
 }
-document.addEventListener('visibilitychange', async () => {
-  if (document.visibilityState === 'visible') await requestWakeLock();
-});
-requestWakeLock();
 
-// ─── Service Worker ───────────────────────────────────────────────────────────
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js').catch(() => {});
-}
-
-// ─── Tables ───────────────────────────────────────────────────────────────────
-const wsTable = [
-  [4,4,5,5,5,5,5,5,5,5],
-  [3,4,4,4,5,5,5,5,5,5],
-  [3,3,4,4,4,4,5,5,5,5],
-  [3,3,3,4,4,4,4,4,5,5],
-  [3,3,3,3,4,4,4,4,4,4],
-  [3,3,3,3,3,4,4,4,4,4],
-  [3,3,3,3,3,3,4,4,4,4],
-  [3,3,3,3,3,3,3,4,4,4],
-  [3,3,3,3,3,3,3,3,4,4],
-  [3,3,3,3,3,3,3,3,3,4]
+// ── Tables ─────────────────────────────────────────────────────────────────
+const wsTable=[
+  [4,4,5,5,5,5,5,5,5,5],[3,4,4,4,5,5,5,5,5,5],[3,3,4,4,4,4,5,5,5,5],[3,3,3,4,4,4,4,4,5,5],[3,3,3,3,4,4,4,4,4,4],
+  [3,3,3,3,3,4,4,4,4,4],[3,3,3,3,3,3,4,4,4,4],[3,3,3,3,3,3,3,4,4,4],[3,3,3,3,3,3,3,3,4,4],[3,3,3,3,3,3,3,3,3,4]
 ];
-const woundTable = [
-  [4,5,6,6,0,0,0,0,0,0],
-  [3,4,5,6,6,0,0,0,0,0],
-  [2,3,4,5,6,6,0,0,0,0],
-  [2,2,3,4,5,6,6,0,0,0],
-  [2,2,2,3,4,5,6,6,0,0],
-  [2,2,2,2,3,4,5,6,6,0],
-  [2,2,2,2,2,3,4,5,6,6],
-  [2,2,2,2,2,2,3,4,5,6],
-  [2,2,2,2,2,2,2,3,4,5],
-  [2,2,2,2,2,2,2,2,3,4]
+const woundTable=[
+  [4,5,6,6,0,0,0,0,0,0],[3,4,5,6,6,0,0,0,0,0],[2,3,4,5,6,6,0,0,0,0],[2,2,3,4,5,6,6,0,0,0],[2,2,2,3,4,5,6,6,0,0],
+  [2,2,2,2,3,4,5,6,6,0],[2,2,2,2,2,3,4,5,6,6],[2,2,2,2,2,2,3,4,5,6],[2,2,2,2,2,2,2,3,4,5],[2,2,2,2,2,2,2,2,3,4]
 ];
-const armourLabels = ['Nessuna','Leggera 6+','Pesante 5+','Gromril 4+','+ Scudo'];
-const armourBase   = [0, 6, 5, 4, 4];
-const armourShield = [0, 0, 0, 0, 1];
-const mods = { cover:false, move:false, long:false, large:false };
 
-function strSaveMod(s) {
-  return s<=3?0: s===4?1: s===5?2: s===6?3: s===7?4: s===8?5: 6;
+function strSaveMod(s){return s<=3?0:s===4?1:s===5?2:s===6?3:s===7?4:s===8?5:6;}
+
+// Returns effective save needed (accounting for str modifier).
+// shieldOnly=true means 6+ non-modifiable.
+function getEffectiveSave(base, str){
+  if(base===null) return null;      // no save
+  if(base===-1)  return 6;         // shield only: always 6+, not modified
+  return base + strSaveMod(str);   // normal armour: modified by str
 }
-function getArmorSave(idx, str) {
-  if (idx === 0) return null;
-  return armourBase[idx] - armourShield[idx] + strSaveMod(str);
-}
-function prob(need) {
-  if (need === null) return 1;
-  if (need <= 1) return 1;
-  if (need > 6) return 0;
-  return (7 - need) / 6;
-}
-function diceClass(need) {
-  if (need === null || need > 6) return 'muted';
-  if (need <= 3) return 'green';
-  if (need <= 4) return 'amber';
+// Is the save unmodifiable (shield only)?
+function isUnmodifiable(base){ return base===-1; }
+
+function prob(n){return n===null?1:n<=1?1:n>6?0:(7-n)/6;}
+function diceClass(n,unmod){
+  if(n===null||n>6) return 'muted';
+  if(unmod) return 'gold';          // special gold color for unmodifiable
+  if(n<=3) return 'green';
+  if(n<=4) return 'amber';
   return 'red';
 }
-function setDice(id, need) {
-  const el = document.getElementById(id);
-  el.className = 'dice ' + diceClass(need > 6 ? 99 : need);
-  el.textContent = (need === null || need > 6) ? '–' : need + '+';
+function setDice(id,n,unmod){
+  const el=document.getElementById(id);
+  const v=(n===null||n>6)?99:n;
+  el.className='dice '+(v>=99?'muted':diceClass(v,unmod));
+  el.textContent=v>=99?'–':v+(unmod?'+★':'+');
 }
-function setPct(id, barId, pct) {
-  document.getElementById(id).textContent = pct + '%';
-  document.getElementById(barId).style.width = pct + '%';
-}
-
-function update() {
-  const wsA   = +document.getElementById('ws-a').value;
-  const wsD   = +document.getElementById('ws-d').value;
-  const str   = +document.getElementById('str').value;
-  const tough = +document.getElementById('tough').value;
-  const armor = +document.getElementById('armor').value;
-
-  document.getElementById('ws-a-val').textContent = wsA;
-  document.getElementById('ws-d-val').textContent = wsD;
-  document.getElementById('str-val').textContent  = str;
-  document.getElementById('tough-val').textContent = tough;
-  document.getElementById('armor-val').textContent = armourLabels[armor];
-
-  const hitN   = wsTable[wsA-1][wsD-1];
-  const wndN   = woundTable[str-1][tough-1];
-  const savN   = getArmorSave(armor, str);
-
-  setDice('res-hit',   hitN);
-  setDice('res-wound', wndN === 0 ? 99 : wndN);
-  setDice('res-armor', savN === null ? null : savN > 6 ? 99 : savN);
-
-  const pHit   = prob(hitN);
-  const pWnd   = wndN === 0 ? 0 : prob(wndN);
-  const pNoSav = savN !== null && savN <= 6 ? 1 - prob(savN) : 1;
-  const total  = Math.round(pHit * pWnd * pNoSav * 100);
-  setPct('total-pct', 'prob-bar', total);
+function setPct(id,barId,pct){
+  document.getElementById(id).textContent=pct+'%';
+  document.getElementById(barId).style.width=pct+'%';
 }
 
-function updateShoot() {
-  const bs    = +document.getElementById('bs').value;
-  const wstr  = +document.getElementById('wstr').value;
-  const st    = +document.getElementById('stough').value;
-  const sa    = +document.getElementById('sarmor').value;
+function update(){
+  const wsA=+document.getElementById('ws-a').value, wsD=+document.getElementById('ws-d').value;
+  const str=+document.getElementById('str').value,  tough=+document.getElementById('tough').value;
+  document.getElementById('ws-a-val').textContent=wsA;
+  document.getElementById('ws-d-val').textContent=wsD;
+  document.getElementById('str-val').textContent=str;
+  document.getElementById('tough-val').textContent=tough;
 
-  document.getElementById('bs-val').textContent   = bs;
-  document.getElementById('wstr-val').textContent = wstr;
-  document.getElementById('st-val').textContent   = st;
-  document.getElementById('sarmor-val').textContent = armourLabels[sa];
+  const base=armourBase[armorCac];
+  const unmod=isUnmodifiable(base);
+  const hitN=wsTable[wsA-1][wsD-1];
+  const wndN=woundTable[str-1][tough-1];
+  const savN=getEffectiveSave(base, unmod?0:str); // unmod: str=0 so no modifier applied
 
-  let modSum = 0;
-  if (mods.cover) modSum -= 1;
-  if (mods.move)  modSum -= 1;
-  if (mods.long)  modSum -= 1;
-  if (mods.large) modSum += 1;
+  setDice('res-hit',hitN,false);
+  setDice('res-wound',wndN===0?99:wndN,false);
+  setDice('res-armor',savN,unmod);
 
-  const hitN  = Math.max(2, (7 - bs) - modSum);
-  const wndN  = woundTable[wstr-1][st-1];
-  const savN  = getArmorSave(sa, wstr);
-
-  setDice('sres-hit',   hitN > 6 ? 99 : hitN);
-  setDice('sres-wound', wndN === 0 ? 99 : wndN);
-  setDice('sres-armor', savN === null ? null : savN > 6 ? 99 : savN);
-
-  const pHit   = hitN > 6 ? 0 : prob(hitN);
-  const pWnd   = wndN === 0 ? 0 : prob(wndN);
-  const pNoSav = savN !== null && savN <= 6 ? 1 - prob(savN) : 1;
-  const total  = Math.round(pHit * pWnd * pNoSav * 100);
-  setPct('stotal-pct', 'sprob-bar', total);
+  const pHit=prob(hitN);
+  const pWnd=wndN===0?0:prob(wndN);
+  const pNoSav=savN!==null&&savN<=6?1-prob(savN):1;
+  setPct('total-pct','prob-bar',Math.round(pHit*pWnd*pNoSav*100));
 }
 
-function toggleMod(k) {
-  mods[k] = !mods[k];
-  document.getElementById('mod-'+k).classList.toggle('active', mods[k]);
-  updateShoot();
+function updateShoot(){
+  const bs=+document.getElementById('bs').value, wstr=+document.getElementById('wstr').value;
+  const st=+document.getElementById('stough').value;
+  document.getElementById('bs-val').textContent=bs;
+  document.getElementById('wstr-val').textContent=wstr;
+  document.getElementById('st-val').textContent=st;
+
+  let modSum=0;
+  if(mods.cover)modSum-=1; if(mods.move)modSum-=1; if(mods.long)modSum-=1; if(mods.large)modSum+=1;
+  const hitN=Math.max(2,(7-bs)-modSum);
+  const wndN=woundTable[wstr-1][st-1];
+  const base=armourBaseShooting[armorShoot];
+  const savN=getEffectiveSave(base, wstr);
+
+  setDice('sres-hit',hitN>6?99:hitN,false);
+  setDice('sres-wound',wndN===0?99:wndN,false);
+  setDice('sres-armor',savN,false);
+
+  const pHit=hitN>6?0:prob(hitN);
+  const pWnd=wndN===0?0:prob(wndN);
+  const pNoSav=savN!==null&&savN<=6?1-prob(savN):1;
+  setPct('stotal-pct','sprob-bar',Math.round(pHit*pWnd*pNoSav*100));
 }
 
-function showTab(t, btn) {
-  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+function toggleMod(k){mods[k]=!mods[k];document.getElementById('mod-'+k).classList.toggle('active',mods[k]);updateShoot();}
+function showTab(t,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
   document.getElementById('tab-'+t).classList.add('active');
   btn.classList.add('active');
 }
-
-update();
-updateShoot();
+update(); updateShoot();
 </script>
 </body>
 </html>
